@@ -2,26 +2,23 @@ name: Build APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Récupérer le projet
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Construire l'APK
-        uses: ArtemSBulgakov/buildozer-action@v1
+      - name: Build with Buildozer
+        uses: kivy/buildozer-action@v1
         with:
-          workdir: .
-          buildozer_version: stable
+          command: buildozer android debug
 
-      - name: Publier l'APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk
+          name: APK
           path: bin/*.apk
